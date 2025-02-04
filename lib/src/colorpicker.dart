@@ -285,7 +285,7 @@ class _ColorPickerState extends State<ColorPicker> {
             child: colorPicker(),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15.0, 5.0, 10.0, 5.0),
+            padding: const EdgeInsets.fromLTRB(15.0, 25.0, 10.0, 25.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -353,7 +353,7 @@ class _ColorPickerState extends State<ColorPicker> {
               enableAlpha: widget.enableAlpha,
               embeddedText: false,
             ),
-          const SizedBox(height: 20.0),
+          // const SizedBox(height: 20.0),
         ],
       );
     } else {
