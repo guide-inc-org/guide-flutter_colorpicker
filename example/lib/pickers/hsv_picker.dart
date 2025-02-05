@@ -74,17 +74,18 @@ class _HSVColorPickerExampleState extends State<HSVColorPickerExample> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      titlePadding: const EdgeInsets.all(0),
-                      contentPadding: const EdgeInsets.all(0),
-                      content: SingleChildScrollView(
+                    return Dialog(
+                      insetPadding: const EdgeInsets.all(0),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                      child: SingleChildScrollView(
                         child: ColorPicker(
                           pickerColor: widget.pickerColor,
                           onColorChanged: widget.onColorChanged,
-                          colorPickerWidth: 300,
-                          pickerAreaHeightPercent: 0.7,
+                          colorPickerHeight: 370,
+                          pickerAreaWidthPercent: 0.0,
+                          toolPadding: EdgeInsets.zero,
                           enableAlpha: _enableAlpha,
-                          labelTypes: _labelTypes,
+                          labelTypes: [],
                           displayThumbColor: _displayThumbColor,
                           paletteType: _paletteType,
                           pickerAreaBorderRadius: const BorderRadius.only(
@@ -454,8 +455,8 @@ SlidePicker(
                           ColorPicker(
                             pickerColor: widget.pickerColor,
                             onColorChanged: widget.onColorChanged,
-                            colorPickerWidth: 300,
-                            pickerAreaHeightPercent: 0.7,
+                            colorPickerHeight: 370,
+                            pickerAreaWidthPercent: 0.0,
                             enableAlpha: _enableAlpha4, // hexInputController will respect it too.
                             displayThumbColor: true,
                             paletteType: PaletteType.hsvWithHue,
