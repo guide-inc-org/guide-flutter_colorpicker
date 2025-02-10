@@ -30,7 +30,6 @@ class ColorPicker extends StatefulWidget {
     this.hexInputController,
     this.colorHistory,
     this.onHistoryChanged,
-    this.hexInputWidget,
     this.toolPadding,
   }) : super(key: key);
 
@@ -49,7 +48,6 @@ class ColorPicker extends StatefulWidget {
   final double pickerAreaWidthPercent;
   final BorderRadius pickerAreaBorderRadius;
   final bool hexInputBar;
-  final Widget? hexInputWidget;
   final EdgeInsets? toolPadding;
 
   /// Allows setting the color using text input, via [TextEditingController].
@@ -178,6 +176,7 @@ class _ColorPickerState extends State<ColorPicker> {
       widget.hexInputController?.text = colorToHex(
         currentHsvColor.toColor(),
         enableAlpha: widget.enableAlpha,
+        includeHashSign: true,
       );
     }
     // Listen to the text input, If there is an `hexInputController` provided.
@@ -191,8 +190,9 @@ class _ColorPickerState extends State<ColorPicker> {
   @override
   void didUpdateWidget(ColorPicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    currentHsvColor =
-        (widget.pickerHsvColor != null) ? widget.pickerHsvColor as HSVColor : HSVColor.fromColor(widget.pickerColor);
+    if (widget.pickerHsvColor != oldWidget.pickerHsvColor || widget.pickerColor != oldWidget.pickerColor) {
+      currentHsvColor = (widget.pickerHsvColor != null) ? widget.pickerHsvColor as HSVColor : HSVColor.fromColor(widget.pickerColor);
+    }
   }
 
   void colorPickerTextInputListener() {
@@ -224,7 +224,11 @@ class _ColorPickerState extends State<ColorPicker> {
       currentHsvColor,
       (HSVColor color) {
         // Update text in `hexInputController` if provided.
-        widget.hexInputController?.text = colorToHex(color.toColor(), enableAlpha: widget.enableAlpha);
+        widget.hexInputController?.text = colorToHex(
+          color.toColor(),
+          enableAlpha: widget.enableAlpha,
+          includeHashSign: true,
+        );
         setState(() => currentHsvColor = color);
         widget.onColorChanged(currentHsvColor.toColor());
         if (widget.onHsvColorChanged != null) widget.onHsvColorChanged!(currentHsvColor);
@@ -235,7 +239,11 @@ class _ColorPickerState extends State<ColorPicker> {
 
   void onColorChanging(HSVColor color) {
     // Update text in `hexInputController` if provided.
-    widget.hexInputController?.text = colorToHex(color.toColor(), enableAlpha: widget.enableAlpha);
+    widget.hexInputController?.text = colorToHex(
+      color.toColor(),
+      enableAlpha: widget.enableAlpha,
+      includeHashSign: true,
+    );
     setState(() => currentHsvColor = color);
     widget.onColorChanged(currentHsvColor.toColor());
     if (widget.onHsvColorChanged != null) widget.onHsvColorChanged!(currentHsvColor);
@@ -360,7 +368,6 @@ class _ColorPickerState extends State<ColorPicker> {
               enableAlpha: widget.enableAlpha,
               embeddedText: false,
             ),
-          widget.hexInputWidget ?? const SizedBox.shrink(),
           // const SizedBox(height: 20.0),
         ],
       );
@@ -446,7 +453,6 @@ class _ColorPickerState extends State<ColorPicker> {
                     enableAlpha: widget.enableAlpha,
                     embeddedText: false,
                   ),
-                widget.hexInputWidget ?? const SizedBox.shrink(),
                 // const SizedBox(height: 5),
               ],
             ),
