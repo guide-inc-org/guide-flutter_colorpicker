@@ -1201,7 +1201,11 @@ class ColorPickerArea extends StatelessWidget {
   final ValueChanged<HSVColor> onColorChanged;
   final PaletteType paletteType;
 
-  void _handleColorRectChange(double horizontal, double vertical) {
+  void _handleColorRectChange({
+    required double horizontal,
+    required double vertical,
+    required double thumbWidthPercent,
+  }) {
     switch (paletteType) {
       case PaletteType.hsv:
       case PaletteType.hsvWithHue:
@@ -1215,9 +1219,13 @@ class ColorPickerArea extends StatelessWidget {
         break;
       case PaletteType.hsl:
       case PaletteType.hslWithHue:
-        onColorChanged(hslToHsv(
+        final hsv = hslToHsv(
           hsvToHsl(hsvColor).withSaturation(horizontal).withLightness(vertical),
-        ));
+        );
+        final color = hsv.toColor();
+        if (!(horizontal > thumbWidthPercent && [Colors.white, Colors.black].contains(color))) {
+          onColorChanged(hsv);
+        }
         break;
       case PaletteType.hslWithSaturation:
         onColorChanged(hslToHsv(
@@ -1268,7 +1276,12 @@ class ColorPickerArea extends StatelessWidget {
       double rad = (atan2(horizontal - center.dx, vertical - center.dy) / pi + 1) / 2 * 360;
       _handleColorWheelChange(((rad + 90) % 360).clamp(0, 360), dist.clamp(0, 1));
     } else {
-      _handleColorRectChange(horizontal / width, 1 - vertical / height);
+      final thumbWidth = height * 0.04;
+      _handleColorRectChange(
+        horizontal: horizontal / width,
+        vertical: 1 - vertical / height,
+        thumbWidthPercent: thumbWidth / width,
+      );
     }
   }
 
