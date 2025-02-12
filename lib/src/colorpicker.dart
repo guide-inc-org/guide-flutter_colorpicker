@@ -203,7 +203,7 @@ class _ColorPickerState extends State<ColorPicker> {
     // and interpret its transparency, dependent on the widget's settings.
     final Color? color = colorFromHex(widget.hexInputController!.text, enableAlpha: widget.enableAlpha);
     // If it's the valid color:
-    if (color != null) {
+    if (color != null && currentHsvColor.toColor() != color) {
       // set it as the current color and
       setState(() => currentHsvColor = HSVColor.fromColor(color));
       // notify with a callback.
