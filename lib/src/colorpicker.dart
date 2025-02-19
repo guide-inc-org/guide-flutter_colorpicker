@@ -201,7 +201,11 @@ class _ColorPickerState extends State<ColorPicker> {
     if (widget.hexInputController == null) return;
     // If a user is inserting/typing any text — try to get the color value from it,
     // and interpret its transparency, dependent on the widget's settings.
-    final Color? color = colorFromHex(widget.hexInputController!.text, enableAlpha: widget.enableAlpha);
+    String newValue = widget.hexInputController!.text;
+    if (newValue.length > 7) {
+      newValue = newValue.substring(0, 7);
+    }
+    final Color? color = colorFromHex(newValue, enableAlpha: widget.enableAlpha);
     // If it's the valid color:
     if (color != null && currentHsvColor.toColor() != color) {
       // set it as the current color and
